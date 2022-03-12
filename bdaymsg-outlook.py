@@ -62,19 +62,23 @@ def bdaycheck():
         # the current month and current day
         if((data.iloc[row][' month'] == current_month) and (data.iloc[row][' day'] == current_day)):
 
-            # retrieve the email from the row and save it in the variable, celebemail
-            celebemail = data.iloc[row][' email'].lstrip()
+            # retrieve the email from the row and save it in the variable, cemail
+            cemail = data.iloc[row][' email'].lstrip()
 
-            # retrieves the first name from the row and save it in the variable, celebfname
-            celebfname = data.iloc[row]['first_name']
+            # retrieves the first name from the row and save it in the variable, cfirstname
+            cfirstname = data.iloc[row]['first_name']
+            
+            # retrieves the last name from the row and save it in the variable, clastname
+            clastname = data.iloc[row][' last_name'].lstrip()
 
             # retrieve the number from the row and save it in the variable, celebnumber
-            celebnumber = data.iloc[row][' phone_number'].lstrip()
+            cnumber = data.iloc[row][' phone_number'].lstrip()
 
             # put them all into a list
-            tmp = [celebemail, celebfname, celebnumber]
+            tmp = [cemail, cfirstname, clastname, cnumber]
             details.append(tmp)
         
+    print(details)
     sendmail(details)
 
 
@@ -89,7 +93,7 @@ def sendmail(details):
             msg_contents = bday_msg.read()
 
             # replace the html [NAME] tag with the actual name on the data
-            the_msg = msg_contents.replace("[NAME]", details[i][1])
+            the_msg = msg_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
             the_email = details[i][0]
 
             # replace the GIF image with one from the imported python files
@@ -99,8 +103,7 @@ def sendmail(details):
             msg = MIMEText(the_msg, 'html')
             msg["From"] = "Ministry of Industry Trade and Cooperatives <bladesofsteel2009@hotmail.com>"
             msg["To"] = the_email
-            msg["Subject"] = f"Happy Birthday {details[i][1]}!!"                    
-            
+            msg["Subject"] = f"Happy Birthday {details[i][1]} {details[i][2]}!!"            
         
         # port_check.check_port(HOST)
         
