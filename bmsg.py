@@ -14,13 +14,15 @@ import time
 import smtplib, os
 
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from img_sources.gif_images import gif_images
+from dotenv import load_dotenv
 
-user = os.environ['HOTMAIL_ACCT']
-password = os.environ['HOTMAIL_PSWD']
+load_dotenv()
 
-HOST = ("smtp-mail.outlook.com", 587)
+host = os.getenv('EMAIL_HOST')
+port = os.getenv('EMAIL_PORT')
+user = os.getenv('EMAIL_HOST_USER')
+password = os.getenv('EMAIL_PASSWORD')
 
 
 ############## Program Logic ##############
@@ -31,7 +33,7 @@ def connect():
     global server
     
     # open a connection with the smtplib library
-    server = smtplib.SMTP('smtp-mail.outlook.com', 587)
+    server = smtplib.SMTP(host, port)
 
     # identify yourself to the server
     server.ehlo()
@@ -40,9 +42,9 @@ def connect():
     server.starttls()
 
     # send the email
-    server.login(user, password)
-        
-
+    server.login(user, password)   
+     
+      
 def bdaycheck():
     # read the data
     data = pd.read_csv("birthdays.csv")
@@ -76,11 +78,15 @@ def bdaycheck():
 
             # put them all into a list
             tmp = [cemail, cfirstname, clastname, cnumber]
-            details.append(tmp)
-        
-    print(details)
-    sendmail(details)
+            details.append(tmp)       
+    
+    # open an smtp connection
+    connect()
+    
+    # call the sendmail function and pass the details list to itd
+    sendmail (details)
 
+    
 
 def sendmail(details):
     # loop through the filtered birthday list
@@ -105,11 +111,7 @@ def sendmail(details):
             msg["To"] = the_email
             msg["Subject"] = f"Happy Birthday {details[i][1]} {details[i][2]}!!"            
         
-        # port_check.check_port(HOST)
         
-        # open a smtp connectiion
-        connect()    
-
         try:
             # displays whom the message is being sent to
             print('')
@@ -132,7 +134,7 @@ def sendmail(details):
                                     to {details[i][1]} <{details[i][0]}> failed to deliver")
 
     # time before sever closes
-    time.sleep(3)
+    time.sleep(5)
     
     
     # close the server
@@ -140,5 +142,5 @@ def sendmail(details):
     print("Goodbye \n")  
 
 
-# call the driver function
+# initiate the program
 bdaycheck()
