@@ -126,11 +126,11 @@ def sendmail(details):
         except Exception as e:
 
             # print an error message if message failed to send
-            print(f"Message not sent to: {details[i][0]} \n \
-                  Reason: {e} \n\n")
+            print(f"Message not sent to {details[i][0]} \n \
+                  REASON: {e} \n\n")
             
             # update the program admin if message failed to deliver
-            server.send_message(msg["From"], 'neutrolysis@gmail.com', msage=f"Birthday Felicitation message \
+            server.send_message(msg["From"], 'neutrolysis@gmail.com', message=f"Birthday Felicitation message \
                                     to {details[i][1]} <{details[i][0]}> failed to deliver")
 
     # time before sever closes
