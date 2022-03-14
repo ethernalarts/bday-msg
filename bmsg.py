@@ -115,7 +115,7 @@ def sendmail(details):
         try:
             # displays whom the message is being sent to
             print('')
-            print(f"Sending birthday felicitation to {details[i][0]}... \n")
+            print(f"Sending birthday felicitation to {details[i][1]} {details[i][2]} <{details[i][0]}>... \n")
 
             # send the email
             server.send_message(msg)
