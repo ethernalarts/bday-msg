@@ -1,20 +1,22 @@
-# This program goes through a csv file of staff names, emails, phone numbers
-# and birthdays, checks for those whose birthday might be today and sends a
+# This program goes through a csv file of staff details.
+# It returns a list of birthday celebrants today, if any and sends a
 # Birthday Felicitation email(s) to them
-# Created by Uwa V. Isibor, March 2022
+# AUTHOR: Uwa V. Isibor, March 2022
+# CLIENT: Edo State Ministry of Industry, Trade and Cooperatives
 
 
 ############## Imports ##############
 
-# import port_check
 import datetime as dtime
+from numpy import empty
 import pandas as pd
 import random
 import time
-import smtplib, os
+import smtplib
+import os
+import sys
 
 from email.mime.text import MIMEText
-from img_sources.gif_images import gif_images
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,16 +24,17 @@ load_dotenv()
 host = os.getenv('EMAIL_HOST')
 port = os.getenv('EMAIL_PORT')
 user = os.getenv('EMAIL_HOST_USER')
+prog_admin = os.getenv('ADMIN_EMAIL')
 password = os.getenv('EMAIL_PASSWORD')
 
 
 ############## Program Logic ##############
 
-def connect():    
-    # make the server variable global so other 
+def connect(details):
+    # make the "server" variable global so other
     # functions in the program can call it
     global server
-    
+
     # open a connection with the smtplib library
     server = smtplib.SMTP(host, port)
 
@@ -41,13 +44,22 @@ def connect():
     # secure the connection
     server.starttls()
 
-    # send the email
-    server.login(user, password)   
-     
-      
+    # log in
+    server.login(user, password)
+
+    # effects
+    print("Connected.\n")
+
+    # effects
+    time.sleep(2)
+
+    # call the sendmail function and pass the details list to it
+    sendmail(details)
+
+
 def bdaycheck():
-    # read the data
-    data = pd.read_csv("birthdays.csv")
+    # read the file
+    data = pd.read_csv("stafflist.csv")
 
     # current day and month
     current_day = dtime.datetime.now().day
@@ -56,6 +68,12 @@ def bdaycheck():
     # a list to hold the detail(s) retrieved from rows that have the
     # current day as birthdays incase there are more than one celebrant
     details = []
+
+    # effects
+    print("\nChecking...\n")
+
+    # effects
+    time.sleep(2)
 
     # loop through the pandas DataFrame
     for row in range(len(data)):
@@ -69,78 +87,102 @@ def bdaycheck():
 
             # retrieves the first name from the row and save it in the variable, cfirstname
             cfirstname = data.iloc[row]['first_name']
-            
+
             # retrieves the last name from the row and save it in the variable, clastname
             clastname = data.iloc[row][' last_name'].lstrip()
 
-            # retrieve the number from the row and save it in the variable, celebnumber
+            # retrieve the number from the row and save it in the variable, cnumber
             cnumber = data.iloc[row][' phone_number'].lstrip()
 
             # put them all into a list
             tmp = [cemail, cfirstname, clastname, cnumber]
-            details.append(tmp)       
-    
-    # open an smtp connection
-    connect()
-    
-    # call the sendmail function and pass the details list to itd
-    sendmail (details)
+            details.append(tmp)
 
-    
+    # checks if the list is empty (which means no birthday today)
+    if details is empty:
+        # effects
+        print("No birthdays today. Goodbye. \n")
+
+        # effects
+        time.sleep(1)
+
+        # terminates the program
+        sys.exit()
+        
+    else:
+        # effects
+        print("We have birthdays today, connecting...\n")
+        
+        # effects
+        time.sleep(3)
+
+        try:
+            # opens an smtp connection
+            connect(details)
+
+        except Exception as e:
+            # effects
+            print(f"Connection failed. Reason: {e} \n")
+
+        # call the sendmail function and pass the details list to itd
+        # sendmail (details)
+
 
 def sendmail(details):
-    # loop through the filtered birthday list
+    # loop through the birthday celebrants list
     for i in range(len(details)):
 
         # open a random html file out of the three files that exists
-        with open(f"./templates/letter_{random.randint(1, 1)}.html") as bday_msg:
+        with open(f"./templates/card_{random.randint(1, 1)}.html") as bday_msg:
 
             # reading the file
-            msg_contents = bday_msg.read()
+            card_contents = bday_msg.read()
 
             # replace the html [NAME] tag with the actual name on the data
-            the_msg = msg_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
-            the_email = details[i][0]
-
-            # replace the GIF image with one from the imported python files
-            the_msg = the_msg.replace("[GIF IMAGE]", random.choice(gif_images))
+            card_msg = card_contents.replace("[NAME]", f"{(details[i][1]).upper()} {(details[i][2]).upper()}")
+            to_email = details[i][0]
 
             # create the msg
-            msg = MIMEText(the_msg, 'html')
+            msg = MIMEText(card_msg, 'html')
             msg["From"] = "Ministry of Industry Trade and Cooperatives <bladesofsteel2009@hotmail.com>"
-            msg["To"] = the_email
-            msg["Subject"] = f"Happy Birthday {details[i][1]} {details[i][2]}!!"            
-        
-        
+            msg["To"] = to_email
+            msg["Subject"] = f"Happy Birthday {details[i][1]} {details[i][2]}!!"
+
         try:
-            # displays whom the message is being sent to
-            print('')
-            print(f"Sending birthday felicitation to {details[i][1]} {details[i][2]} <{details[i][0]}>... \n")
+            # effects
+            print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]} <{details[i][0]}>... \n")
 
             # send the email
             server.send_message(msg)
 
-            # print a confirmation if message was sent successfully
-            print(f"Birthday Felicitation sent \n")                       
+            # confirmatory message
+            print(f"Birthday Felicitation sent \n")
+
+            # confirmatory message to program admin
+            server.send_message(msg["From"], prog_admin, msg=f"Birthday Felicitation message \
+                                    to {details[i][1]} {details[i][2]} <{details[i][0]}> has been sent")
 
         except Exception as e:
-
-            # print an error message if message failed to send
+            # error message
             print(f"Message not sent to {details[i][0]} \n \
                   REASON: {e} \n\n")
-            
-            # update the program admin if message failed to deliver
-            server.send_message(msg["From"], 'neutrolysis@gmail.com', message=f"Birthday Felicitation message \
+
+            # error message to program admin
+            server.send_message(msg["From"], prog_admin, msg=f"Birthday Felicitation message \
                                     to {details[i][1]} <{details[i][0]}> failed to deliver")
 
+    # effects
+    print("Closing server...\n")
+
     # time before sever closes
-    time.sleep(5)
-    
-    
+    time.sleep(2)
+
     # close the server
     server.close()
-    print("Goodbye \n")  
+
+    # goodbye message
+    print("Goodbye. \n")
 
 
-# initiate the program
+# launch the program
 bdaycheck()

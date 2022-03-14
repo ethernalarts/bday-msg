@@ -3,7 +3,7 @@ body {
     background-color: rgb(176, 238, 176);     
     text-align: center;
     margin: 0;    
-    padding: 10px 0;
+    padding: 0;
 }
 
 div.container {
@@ -15,7 +15,7 @@ div.container {
 }
 
 a {
-	color: green;
+	color: lightgreen;
     cursor: pointer;
     text-decoration: underline;
 }
@@ -32,8 +32,15 @@ p {
     font-weight: 400;
 }
 
+p.dear {    
+    font-size: 1.8em;   
+    font-weight: bold;
+    font-family: 'Lobster', cursive;
+    color: green;    
+}
+
 h1 {   
-    font-size: 1.55em;  
+    font-size: 1.6em;  
     font-family: 'Antonio', sans-serif;  
 }
 
@@ -54,12 +61,12 @@ img {
 .svg{
     width: 130px;
     height: 130px;
-    margin: 20px auto 40px;
+    margin: 35px auto 40px;
 }
 
 img.mitc {
     
-    width: 170px;
+    width: 180px;
     height: 170px;
     margin: 40px auto 0;
 }
@@ -67,8 +74,8 @@ img.mitc {
 footer {
 	text-align: center;
 	font-size: 0.75em;
-	background-color: rgb(69, 238, 69);
-	color: #F1F1F1;
+	background-color: green;
+	color: white;
 	padding: 0;	
 	margin-bottom: 0px;
 	width: 800px;
