@@ -7,6 +7,7 @@
 
 ############## Imports ##############
 
+from ast import IsNot
 import datetime as dtime
 from numpy import empty
 import pandas as pd
@@ -99,7 +100,7 @@ def bdaycheck():
             details.append(tmp)
 
     # checks if the list is empty (which means no birthday today)
-    if details is empty:
+    if (len(details) == 0):
         # effects
         print("No birthdays today. Goodbye. \n")
 
@@ -114,18 +115,16 @@ def bdaycheck():
         print("We have birthdays today, connecting...\n")
         
         # effects
-        time.sleep(3)
+        time.sleep(2)
 
-        try:
+        try:            
             # opens an smtp connection
             connect(details)
 
         except Exception as e:
             # effects
             print(f"Connection failed. Reason: {e} \n")
-
-        # call the sendmail function and pass the details list to itd
-        # sendmail (details)
+        
 
 
 def sendmail(details):
@@ -158,19 +157,20 @@ def sendmail(details):
             # confirmatory message
             print(f"Birthday Felicitation sent \n")
 
-            # confirmatory message to program admin
-            server.send_message(msg["From"], prog_admin, msg=f"Birthday Felicitation message \
-                                    to {details[i][1]} {details[i][2]} <{details[i][0]}> has been sent")
-
         except Exception as e:
             # error message
-            print(f"Message not sent to {details[i][0]} \n \
+            print(f"Message not sent to {details[i][1]} {details[i][2]} <{details[i][0]}> \
                   REASON: {e} \n\n")
 
             # error message to program admin
-            server.send_message(msg["From"], prog_admin, msg=f"Birthday Felicitation message \
+            server.send_message(msg["From"], prog_admin, body = f"Birthday Felicitation message \
                                     to {details[i][1]} <{details[i][0]}> failed to deliver")
 
+    
+    # confirmatory message to program admin
+    server.send_message(msg["From"], prog_admin, body = f"Birthday Felicitation message \
+                        to {details[i][1]} {details[i][2]} <{details[i][0]}> has been sent")
+    
     # effects
     print("Closing server...\n")
 
