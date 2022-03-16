@@ -1,15 +1,13 @@
 # This program goes through a csv file of staff details.
-# It returns a list of birthday celebrants today, if any and sends a
-# Birthday Felicitation email(s) to them
+# It returns a list of those that have birthdays and sends 
+# Birthday Felicitation Email(s) to them.
 # AUTHOR: Uwa V. Isibor, March 2022
 # CLIENT: Edo State Ministry of Industry, Trade and Cooperatives
 
 
 ############## Imports ##############
 
-from ast import IsNot
 import datetime as dtime
-from numpy import empty
 import pandas as pd
 import random
 import time
@@ -26,8 +24,8 @@ load_dotenv()
 host = os.getenv('EMAIL_HOST')
 port = os.getenv('EMAIL_PORT')
 user = os.getenv('EMAIL_HOST_USER')
-prog_admin = os.getenv('ADMIN_EMAIL')
 password = os.getenv('EMAIL_PASSWORD')
+prog_admin = os.getenv('ADMIN_EMAIL')
 
 # for desktop notification
 toast = ToastNotifier()
@@ -72,9 +70,10 @@ def bdaycheck():
             # retrieve the number from the row and save it in the variable, cnumber
             cnumber = data.iloc[row][' phone_number'].lstrip()
 
-            # put them all into a list
+            # put them all into a temporary list
             tmp = [cemail, cfirstname, clastname, cnumber]
 
+            # put them into the details list
             details.append(tmp)
 
     if (len(details) == 0):
@@ -166,14 +165,7 @@ def sendmail(details):
             print(f"Message not sent to {details[i][1]} {details[i][2]} <{details[i][0]}> \
                   REASON: {e} \n\n")
 
-            # error message to program admin
-            server.send_message(msg["From"], prog_admin, body=f"Birthday Felicitation message \
-                                    to {details[i][1]} <{details[i][0]}> failed to deliver")
-
-    # confirmatory message to program admin
-    # server.send_message(msg["From"], prog_admin, body = f"Birthday Felicitation message \
-    #                     to {details[i][1]} {details[i][2]} <{details[i][0]}> has been sent")
-
+    
     # confirmatory message
     print("Closing server...\n")
 
@@ -185,15 +177,6 @@ def sendmail(details):
 
     # confirmatory message
     print("Goodbye. \n")
-
-    toast.show_toast("Email Sent!",
-                     f"{details[i][1]} {details[i][2]} was sent an e-mail",
-                     threaded=True,
-                     icon_path=None,
-                     duration=6)
-
-    while toast.notification_active():
-        time.sleep(0.1)
 
 
 # launch the program
