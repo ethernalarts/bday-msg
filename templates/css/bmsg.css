@@ -15,14 +15,15 @@ div.container {
 }
 
 a {
-	color: lightgreen;
+	color: whitesmoke;
     cursor: pointer;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 a:hover {
+    color: lightgreen;
     cursor: pointer;
-    text-decoration: none; 
+    text-decoration: underline; 
 }
 
 p {
@@ -64,35 +65,26 @@ div.gif {
     margin: 35px auto 0;
     padding: 40px;
     max-width: 500px;
-    width: 100%;
-    height: 100%;
 }
 
 img.bbanner {
     max-width: 800px;
-    width: 100%;
-    height: 100%;
 }
 
 img.svg{
     max-width: 130px;
     max-height: 130px;
-    width: 100%;
-    height: 100%;
     margin: 35px auto 40px;
 }
 
 img.mitc {
     max-width: 180px;
     max-height: 170px;
-    width: 100%;
-    height: 100%;
     margin: 40px auto 0;
 }
 
 img.bdaytou {
     max-width: 700px;
-    width: 100%;
     height: 100%;
 }
 
@@ -104,7 +96,7 @@ footer {
 	padding: 0;	
 	margin-bottom: 0px;
 	width: 800px;
-	height: 500px;
+	height: 480px;
 	display: block;
 	font-family: 'Antonio', sans-serif;
 	overflow: hidden;
@@ -118,6 +110,6 @@ footer {
 p.footerCONTACT-h2 {
     color: lightgreen;
     font-weight: 400;
-    margin: 40px 0 -20px;
+    margin: 40px 0 -10px;
     font-family: 'Antonio', sans-serif; 
 }
