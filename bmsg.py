@@ -7,7 +7,7 @@
 
 ############## Imports ##############
 
-import datetime as dtime
+from datetime import  date
 import pandas as pd
 import random
 import time
@@ -38,12 +38,12 @@ def bdaycheck():
     data = pd.read_csv("stafflist.csv")
 
     # current day and month
-    current_day = dtime.datetime.now().day
-    current_month = dtime.datetime.now().month
+    current_day = date.today().day
+    current_month = date.today().month
 
     # a list to hold the detail(s) retrieved from rows that have the
     # current day as birthdays incase there are more than one celebrant
-    details = []
+    details = list()
 
     # effects
     print("\nChecking...\n")
@@ -70,11 +70,8 @@ def bdaycheck():
             # retrieve the number from the row and save it in the variable, cnumber
             cnumber = data.iloc[row][' phone_number'].lstrip()
 
-            # put them all into a temporary list
-            tmp = [cemail, cfirstname, clastname, cnumber]
-
             # put them into the details list
-            details.append(tmp)
+            details.append([cemail, cfirstname, clastname, cnumber])
 
     if (len(details) == 0):
         # confirmatory message        
