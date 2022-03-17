@@ -7,13 +7,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap');
 
 body {
-    background-color: rgb(176, 238, 176);
+    background-color: white;
     text-align: center;
     margin: 0;
     padding: 0;
 }
 
-div.container {
+.container {
     background-color: white;
     margin: 0 auto;
     text-align: center;
@@ -68,7 +68,7 @@ img {
     height: 100%;
 }
 
-div.gif {
+img.gif {
     margin: 35px auto 0;
     padding: 40px;
     max-width: 500px;

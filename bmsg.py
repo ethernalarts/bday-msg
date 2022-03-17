@@ -132,14 +132,13 @@ def sendmail(details):
     for i in range(len(details)):
 
         # open a random html file out of the three files that exists
-        with open(f"./templates/card_{random.randint(1, 1)}.html") as bday_msg:
+        with open(f"./templates/inlinecard_{random.randint(1, 1)}.html") as bday_msg:
 
             # reading the file
             card_contents = bday_msg.read()
 
             # replace the html [NAME] tag with the actual name on the data
-            card_msg = card_contents.replace(
-                "[NAME]", f"{(details[i][1]).upper()} {(details[i][2]).upper()}")
+            card_msg = card_contents.replace("[NAME]", f"{(details[i][1]).upper()} {(details[i][2]).upper()}")
             to_email = details[i][0]
 
             # create the msg
