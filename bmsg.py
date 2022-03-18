@@ -85,7 +85,8 @@ def bdaycheck():
 
     else:
         # confirmatory message
-        print("We have birthdays today, connecting...\n")
+        print("We have birthday(s) today, connecting...\n")
+        print(details)
         
         # time delay of 2 seconds        
         time.sleep(2)
@@ -138,7 +139,7 @@ def sendmail(details):
             card_contents = bday_msg.read()
 
             # replace the html [NAME] tag with the actual name on the data
-            card_msg = card_contents.replace("[NAME]", f"{(details[i][1]).upper()} {(details[i][2]).upper()}")
+            card_msg = card_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
             to_email = details[i][0]
 
             # create the msg
