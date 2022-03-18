@@ -85,8 +85,17 @@ def bdaycheck():
 
     else:
         # confirmatory message
-        print("We have birthday(s) today, connecting...\n")
-        print(details)
+        print("We have birthday(s) today:..\n")
+        
+        # print the names of the celebrants
+        for i in range(len(details)):
+            print(f"{i+1}. {details[i][1]} {details[i][2]} \n")
+        
+        # time delay of 2 seconds        
+        time.sleep(2)
+        
+        # status message
+        print("Connecting...")
         
         # time delay of 2 seconds        
         time.sleep(2)
@@ -149,7 +158,7 @@ def sendmail(details):
             msg["Subject"] = f"Happy Birthday {details[i][1]} {details[i][2]}!!"
 
         try:
-            print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]} <{details[i][0]}>... \n")
+            print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]} ({details[i][0]})... \n")
 
             # send the email
             server.send_message(msg)
