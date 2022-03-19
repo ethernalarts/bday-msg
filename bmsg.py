@@ -2,7 +2,8 @@
     It returns a list of those that have birthdays and sends
     Birthday Felicitation Email(s) to them.
     AUTHOR: Uwa V. Isibor, March 2022
-    CLIENT: Edo State Ministry of Industry, Trade and Cooperatives '''
+    CLIENT: Edo State Ministry of Industry, Trade and Cooperatives 
+'''
 
 
 from datetime import date
@@ -43,17 +44,17 @@ def bdaycheck():
 
     time.sleep(2)
 
-    ''' check if the month and day of a row is equal to
-    the current month and current day '''
+    # check if the month and day of a row is equal to
+    # the current month and current day '''
     for row in range(len(data)):
         if((data.iloc[row][' month'] == current_month) and (data.iloc[row][' day'] == current_day)):
 
-            cemail = data.iloc[row][' email'].lstrip()
-            cfirstname = data.iloc[row]['first_name']
-            clastname = data.iloc[row][' last_name'].lstrip()
-            cnumber = data.iloc[row][' phone_number'].lstrip()
+            email = data.iloc[row][' email'].lstrip()
+            firstname = data.iloc[row]['first_name']
+            lastname = data.iloc[row][' last_name'].lstrip()
+            number = data.iloc[row][' phone_number'].lstrip()
 
-            details.append([cemail, cfirstname, clastname, cnumber])
+            details.append([email, firstname, lastname, number])
 
     if (len(details) == 0):
         print("No birthdays today. Goodbye. \n")
@@ -109,8 +110,7 @@ def sendmail(details):
 
             card_contents = bday_msg.read()
 
-            card_msg = card_contents.replace(
-                "[NAME]", f"{details[i][1]} {details[i][2]}")
+            card_msg = card_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
             to_email = details[i][0]
 
             msg = MIMEText(card_msg, 'html')
@@ -119,20 +119,15 @@ def sendmail(details):
             msg["Subject"] = f"Happy Birthday {details[i][1]} {(details[i][2]).rstrip()}!!"
 
         try:
-            print(
-                f"Sending Birthday felicitations to {details[i][1]} {details[i][2]}({details[i][0]})... \n")
+            print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]}({details[i][0]})... \n")
 
             server.send_message(msg)
 
             print(f"Birthday Felicitation sent \n")
 
         except Exception as e:
-            print(f"Message not sent to {details[i][1]} {details[i][2]} <{details[i][0]}> \
-                REASON: {e} \n\n")
-
-    server.send_message(f"[MITC BIRTHDAY EMAIL] Delivery Report", msg["From"],
-                        prog_admin, msg=f"Birthday Felicitation message \
-                        to {details[i][1]} {details[i][2]} <{details[i][0]}> has been sent")
+            print(f"Message not sent to {details[i][1]} {details[i][2]} ({details[i][0]}) \
+                REASON: {e} \n\n")  
 
     print("Closing server...\n")
 
