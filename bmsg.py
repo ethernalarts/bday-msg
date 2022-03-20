@@ -5,11 +5,10 @@ AUTHOR: Uwa V. Isibor, March 2022
 CLIENT: Edo State Ministry of Industry, Trade and Cooperatives '''
 
 from datetime import date
+import time
 import pandas as pd
 import random
-import time
-import smtplib
-import os
+import smtplib, os
 import sys
 
 from email.mime.text import MIMEText
@@ -43,7 +42,7 @@ def bdaycheck():
     time.sleep(2)
 
     # check if the month and day of a row is equal to
-    # the current month and current day '''
+    # the current month and current day
     for row in range(len(data)):
         if((data.iloc[row][' month'] == current_month) and (data.iloc[row][' day'] == current_day)):
 
