@@ -1,10 +1,8 @@
 ''' This program goes through a csv file of staff details.
-    It returns a list of those that have birthdays and sends
-    Birthday Felicitation Email(s) to them.
-    AUTHOR: Uwa V. Isibor, March 2022
-    CLIENT: Edo State Ministry of Industry, Trade and Cooperatives 
-'''
-
+It returns a list of those that have birthdays and sends
+Birthday Felicitation Email(s) to them.
+AUTHOR: Uwa V. Isibor, March 2022
+CLIENT: Edo State Ministry of Industry, Trade and Cooperatives '''
 
 from datetime import date
 import pandas as pd
@@ -144,7 +142,7 @@ def sendmail(details):
                      duration=6)
 
     while toast.notification_active():
-        time.sleep(0.1)
+        time.sleep(0.2)
 
     sys.exit()
 
