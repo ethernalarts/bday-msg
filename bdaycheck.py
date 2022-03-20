@@ -11,8 +11,6 @@ def bdaycheck():
     current_day = date.today().day
     current_month = date.today().month
 
-    details = []
-
     print("\nChecking...\n")
 
     time.sleep(2)
@@ -22,21 +20,10 @@ def bdaycheck():
     for row in range(len(data)):
         if((data.iloc[row][' month'] == current_month) and (data.iloc[row][' day'] == current_day)):
 
-            email = data.iloc[row][' email'].lstrip()
-            firstname = data.iloc[row]['first_name']
-            lastname = data.iloc[row][' last_name'].lstrip()
-            number = data.iloc[row][' phone_number'].lstrip()
-
-            details.append([email, firstname, lastname, number])
-
-    if (len(details) == 0):
-        print("No birthdays today. Goodbye. \n")
-
-    else:
-        print("We have birthday(s) today:\n")
-
-        for i in range(len(details)):
-            print(f"{i+1}. {details[i][1]} {details[i][2]} ({details[i][0]}) {details[i][3]}\n")
+            print(f"{row + 2}. {data.iloc[row]['first_name']} {data.iloc[row][' last_name']} \n")
+        
+        else:
+            pass    
 
     sys.exit()
 

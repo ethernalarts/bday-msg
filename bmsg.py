@@ -46,12 +46,13 @@ def bdaycheck():
     for row in range(len(data)):
         if((data.iloc[row][' month'] == current_month) and (data.iloc[row][' day'] == current_day)):
 
+            sn = row
             email = data.iloc[row][' email'].lstrip()
             firstname = data.iloc[row]['first_name']
             lastname = data.iloc[row][' last_name'].lstrip()
             number = data.iloc[row][' phone_number'].lstrip()
-
-            details.append([email, firstname, lastname, number])
+            
+            details.append([sn, firstname, lastname, email, number])
 
     if (len(details) == 0):
         print("No birthdays today. Goodbye. \n")
@@ -61,9 +62,9 @@ def bdaycheck():
         sys.exit()
     else:
         print("We have birthday(s) today:\n")
-
+        
         for i in range(len(details)):
-            print(f"{i+1}. {details[i][1]} {details[i][2]} \n")
+            print(f"{sn+2}. {firstname} {lastname}")
 
         time.sleep(2)
 
@@ -73,6 +74,7 @@ def bdaycheck():
 
         try:
             connect(details)
+            
         except Exception as e:
             print(f"Connection failed. Reason: {e} \n")
 
@@ -108,7 +110,7 @@ def sendmail(details):
             card_contents = bday_msg.read()
 
             card_msg = card_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
-            to_email = details[i][0]
+            to_email = details[i][3]
 
             msg = MIMEText(card_msg, 'html')
             msg["From"] = "Ministry of Industry Trade and Cooperatives <bladesofsteel2009@hotmail.com>"
@@ -116,14 +118,14 @@ def sendmail(details):
             msg["Subject"] = f"Happy Birthday {details[i][1]} {(details[i][2]).rstrip()}!!"
 
         try:
-            print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]}({details[i][0]})... \n")
+            print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]}({details[i][3]})... \n")
 
             server.send_message(msg)
 
             print(f"Birthday Felicitation sent \n")
 
         except Exception as e:
-            print(f"Message not sent to {details[i][1]} {details[i][2]} ({details[i][0]}) \
+            print(f"Message not sent to {details[i][1]} {details[i][2]} ({details[i][3]}) \
                 REASON: {e} \n\n")  
 
     print("Closing server...\n")
