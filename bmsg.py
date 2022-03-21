@@ -64,7 +64,7 @@ def bdaycheck():
         print("We have birthday(s) today:\n")
         
         for i in range(len(details)):
-            print(f"{sn+2}. {firstname} {lastname}")
+            print(f"{sn+2}. {firstname} {lastname} \n")
 
         time.sleep(2)
 
