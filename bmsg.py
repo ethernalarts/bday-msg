@@ -109,13 +109,13 @@ def sendmail(details):
 
             card_contents = bday_msg.read()
 
-            card_msg = card_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
-            to_email = details[i][3]
+        card_msg = card_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
+        to_email = details[i][3]
 
-            msg = MIMEText(card_msg, 'html')
-            msg["From"] = "Ministry of Industry Trade and Cooperatives <bladesofsteel2009@hotmail.com>"
-            msg["To"] = to_email
-            msg["Subject"] = f"Happy Birthday {details[i][1]} {(details[i][2]).rstrip()}!!"
+        msg = MIMEText(card_msg, 'html')
+        msg["From"] = "Ministry of Industry Trade and Cooperatives <bladesofsteel2009@hotmail.com>"
+        msg["To"] = to_email
+        msg["Subject"] = f"Happy Birthday {details[i][1]} {(details[i][2]).rstrip()}!!"
 
         try:
             print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]}({details[i][3]})... \n")
