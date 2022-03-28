@@ -53,7 +53,7 @@ def bdaycheck():
             number = data.iloc[row][' phone_number'].lstrip()
             
             details.append([sn, firstname, lastname, email, number])
-
+    
     if (len(details) == 0):
         print("No birthdays today. Goodbye. \n")
 
