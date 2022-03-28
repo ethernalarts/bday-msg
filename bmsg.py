@@ -45,26 +45,23 @@ def bdaycheck():
     # the current month and current day
     for row in range(len(data)):
         if((data.iloc[row][' month'] == current_month) and (data.iloc[row][' day'] == current_day)):
-
-            sn = row
+            
             email = data.iloc[row][' email'].lstrip()
             firstname = data.iloc[row]['first_name']
             lastname = data.iloc[row][' last_name'].lstrip()
             number = data.iloc[row][' phone_number'].lstrip()
             
-            details.append([sn, firstname, lastname, email, number])
+            details.append([firstname, lastname, email, number])
     
     if (len(details) == 0):
         print("No birthdays today. Goodbye. \n")
-
-        time.sleep(1)
 
         sys.exit()
     else:
         print("We have birthday(s) today:\n")
         
         for i in range(len(details)):
-            print(f"{sn+2}. {firstname} {lastname} \n")
+            print(f"{row+2}. {firstname} {lastname} \n")
 
         time.sleep(2)
 
@@ -106,19 +103,18 @@ def sendmail(details):
 
         # open a random html file out of the three files that exists
         with open(f"./templates/inlinecard_{random.randint(1, 1)}.html") as bday_msg:
-
             card_contents = bday_msg.read()
 
-        card_msg = card_contents.replace("[NAME]", f"{details[i][1]} {details[i][2]}")
-        to_email = details[i][3]
+        card_msg = card_contents.replace("[NAME]", f"{details[i][0]} {details[i][1]}")
+        to_email = details[i][2]
 
         msg = MIMEText(card_msg, 'html')
         msg["From"] = "Ministry of Industry Trade and Cooperatives <bladesofsteel2009@hotmail.com>"
         msg["To"] = to_email
-        msg["Subject"] = f"Happy Birthday {details[i][1]} {(details[i][2]).rstrip()}!!"
+        msg["Subject"] = f"Happy Birthday {details[i][0]} {(details[i][1]).rstrip()}!!"
 
         try:
-            print(f"Sending Birthday felicitations to {details[i][1]} {details[i][2]}({details[i][3]})... \n")
+            print(f"Sending Birthday felicitations to {details[i][0]} {details[i][1]}({details[i][2]})... \n")
 
             server.send_message(msg)
 
@@ -128,25 +124,22 @@ def sendmail(details):
             print(f"Message not sent to {details[i][1]} {details[i][2]} ({details[i][3]}) \
                 REASON: {e} \n\n")  
 
+    toast.show_toast("Email Sent!",
+        f"{details[i][0]} {details[i][1]} was sent an e-mail",
+            threaded=True,
+            icon_path=None,
+            duration=6)
+
+    while toast.notification_active():
+        time.sleep(0.2)
+        
     print("Closing server...\n")
 
     time.sleep(2)
 
-    server.close()
+    server.close()    
 
-    print("Goodbye. \n")
-    
-    toast.show_toast("Email Sent!",
-                     f"{details[i][1]} {details[i][2]} was sent an e-mail",
-                     threaded=True,
-                     icon_path=None,
-                     duration=6)
-
-    while toast.notification_active():
-        time.sleep(0.2)
-
-    sys.exit()
-
+    sys.exit("Goodbye. \n")
 
 # launch the program
 bdaycheck()
