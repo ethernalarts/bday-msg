@@ -23,16 +23,19 @@ def bdaycheck():
                     
         if((data.iloc[row][' month'] == current_month) and (data.iloc[row][' day'] == current_day)):
             if counter == 0:
-                print("We have birthday(s) today \n")
+                print("We have birthday(s) today: \n")
                 counter = counter + 1
                 time.sleep(1)
 
-            print(f"{row + 2}. {data.iloc[row]['first_name']} {data.iloc[row][' last_name']} \n") 
+            print(f"S/N: {row + 2}")
+            print(f"First Name: {data.iloc[row]['first_name']}")  
+            print(f"Last Name: {data.iloc[row][' last_name'].strip()}")
+            print(f"Email: {data.iloc[row][' email'].strip()}")
+            print(f"Phone Number: {data.iloc[row][' phone_number'].strip()}")
+            print('')
         
         elif(counter == 0) and (row == 132):
-            print("No birthdays today. Goodbye \n")    
-            time.sleep(1)        
-            sys.exit()
+            sys.exit("No birthdays today. Goodbye \n")
         else:
             pass               
 
